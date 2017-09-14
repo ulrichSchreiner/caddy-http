@@ -21,7 +21,9 @@ RUN cd github.com/mholt/caddy/caddy \
 FROM alpine:latest
 LABEL maintainer="ulrich.schreiner@gmail.com"
 
-RUN apk --no-cache add ca-certificates
-WORKDIR /root/
-COPY --from=builder /go/src/github.com/mholt/caddy/caddy/caddy  .
-ENTRYPOINT ["/root/caddy"]  
+RUN apk --no-cache add ca-certificates && mkdir /conf
+WORKDIR /conf
+COPY Caddyfile /conf/Caddyfile
+COPY --from=builder /go/src/github.com/mholt/caddy/caddy/caddy /root/ 
+ENTRYPOINT ["/root/caddy"]
+CMD ["--conf", "/conf/Caddyfile"]
