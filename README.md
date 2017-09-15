@@ -1,7 +1,7 @@
 # Caddy build from source with plugins
 
 This Dockerfile builds the caddy server from a specific tag from github and adds
-the plugins listed in the `plugins.go` file. It usese my [caddy-builder](https://github.com/ulrichSchreiner/caddy-builder) for the compile step.
+the plugins listed in the `plugins.go` file. It usese my [caddy-builder](https://github.com/ulrichSchreiner/caddy-builder) for the compile step and my [caddy-runtime](https://github.com/ulrichSchreiner/caddy-runtime) as the runtime image.
 
 Start the container this way (this needs a `Caddyfile` in your cwd):
 ~~~
