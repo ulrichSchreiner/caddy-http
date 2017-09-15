@@ -5,5 +5,10 @@ the plugins listed in the `plugins.go` file. It usese my [caddy-builder](https:/
 
 Start the container this way (this needs a `Caddyfile` in your cwd):
 ~~~
-docker run -it --rm -v $PWD/Caddyfile:/etc/Caddyfile:ro ulrichschreiner/caddy-http:latest --conf /etc/Caddyfile
+docker run -it --rm \
+  -v $PWD/Caddyfile:/etc/Caddyfile:ro \
+  -v /path/to/persistent/volume:/home/caddy/.caddy \
+  ulrichschreiner/caddy-http:latest --conf /etc/Caddyfile -agree -log stdout -port 80 -email you@your.domain
 ~~~
+
+The server uses UID/GID 2002 to write files to `/home/caddy/.caddy` (letsencrypt certificates and keys). If you mount a local volume to this path make sure that this UID/GID has appropriate rights. Caddy will also run with this UID and not as root!
