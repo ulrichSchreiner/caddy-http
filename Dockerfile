@@ -16,14 +16,23 @@ COPY plugins.go /go/src/github.com/mholt/caddy/caddy/caddymain/plugins.go
 RUN cd github.com/mholt/caddy/caddy \
     && go get -u ./... \
     && git checkout -q ${CADDY_VERSION} \
-    && CGO_ENABLED=0 GOOS=linux go run build.go 
+    && go run build.go goos=linux 
 
 FROM alpine:latest
 LABEL maintainer="ulrich.schreiner@gmail.com"
 
-RUN apk --no-cache add ca-certificates && mkdir /conf
-WORKDIR /conf
+RUN apk --no-cache add ca-certificates libcap && mkdir /conf
+WORKDIR /srv
 COPY Caddyfile /conf/Caddyfile
-COPY --from=builder /go/src/github.com/mholt/caddy/caddy/caddy /root/ 
-ENTRYPOINT ["/root/caddy"]
+COPY index.html /srv/index.html
+
+COPY --from=builder /go/src/github.com/mholt/caddy/caddy/caddy /usr/bin/
+RUN addgroup -S caddy \
+    && adduser -D -S -s /sbin/nologin -G caddy caddy \
+    && setcap cap_net_bind_service=+ep /usr/bin/caddy \
+    && chown -R caddy:caddy /srv
+
+EXPOSE 80 443 2015
+USER caddy
+ENTRYPOINT ["/usr/bin/caddy"]
 CMD ["--conf", "/conf/Caddyfile"]
