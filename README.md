@@ -1,6 +1,6 @@
 # DISCONTINUED
 
-please to got https://gitlab.com/ulrichSchreiner/caddy-docker for latest code
+please go to https://gitlab.com/ulrichSchreiner/caddy-docker for latest code
 
 
 # Caddy build from source with plugins
