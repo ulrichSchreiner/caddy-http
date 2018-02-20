@@ -1,3 +1,8 @@
+# DISCONTINUED
+
+please to got https://gitlab.com/ulrichSchreiner/caddy-docker for latest code
+
+
 # Caddy build from source with plugins
 
 This Dockerfile builds the caddy server from a specific tag from github and adds
